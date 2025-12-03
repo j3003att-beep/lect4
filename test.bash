@@ -16,11 +16,23 @@ out=$(seq 5 | ./plus)
 
 ### STRANGE INPUT ###
 
-# 「あ」など数字以外が入ったらエラーが起きるのが正しい
+# 数字以外を入れたらエラーになるのが正しい
 echo "あ" | ./plus >/dev/null 2>&1
 [ "$?" = "1" ] || ng ${LINENO}
 
-# 出力は空であるべき
 out=$(echo "あ" | ./plus 2>/dev/null)
-[ "${out}" = "" ] || ng ${
+[ "${out}" = "" ] || ng ${LINENO}
+
+### EMPTY INPUT ###
+
+echo "" | ./plus >/dev/null 2>&1
+[ "$?" = "1" ] || ng ${LINENO}
+
+out=$(echo "" | ./plus 2>/dev/null)
+[ "${out}" = "" ] || ng ${LINENO}
+
+### RESULT ###
+
+[ "$res" = 0 ] && echo OK
+exit $res
 
