@@ -2,16 +2,19 @@
 # SPDX-FileCopyrightText: 2025 Kanata Arai
 # SPDX-License-Identifier: BSD-3-Clause
 
-
 import sys
 
-ans = 0
+ans = 0.0
 
 for line in sys.stdin:
     line = line.strip()
     if line == "":
-        continue  # 空行は読み飛ばす
-    ans += float(line)
+        # 空行 → エラー終了
+        sys.exit(1)
+    try:
+        ans += float(line)
+    except ValueError:
+        # 数字以外 → エラー終了
+        sys.exit(1)
 
 print(ans)
-
