@@ -1,5 +1,5 @@
 #!/bin/bash
-# SPDX-FileCopyrighitText: 2022 Ryuichi Ueda
+# SPDX-FileCopyrightText: 2022 Ryuichi Ueda
 # SPDX-License-Identifier: BSD-3-Clause
 
 ng(){
@@ -16,22 +16,18 @@ out=$(seq 5 | ./plus)
 
 ### STRANGE INPUT ###
 
-# 数字以外を入れたらエラーになるのが正しい
+# 「あ」など数字以外が入ったらエラーが起きるのが正しい
 echo "あ" | ./plus >/dev/null 2>&1
 [ "$?" = "1" ] || ng ${LINENO}
 
+# 出力は空であるべき
 out=$(echo "あ" | ./plus 2>/dev/null)
 [ "${out}" = "" ] || ng ${LINENO}
 
 ### EMPTY INPUT ###
-
-echo "" | ./plus >/dev/null 2>&1
+out=$(echo | ./plus)
 [ "$?" = "1" ] || ng ${LINENO}
-
-out=$(echo "" | ./plus 2>/dev/null)
 [ "${out}" = "" ] || ng ${LINENO}
-
-### RESULT ###
 
 [ "$res" = 0 ] && echo OK
 exit $res
