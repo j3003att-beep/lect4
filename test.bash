@@ -12,16 +12,25 @@ res=0
 ### I/O TEST ###
 
 out=$(seq 5 | ./plus)
-[ "${out}" = 15.0 ] || ng ${LINENO}
+[ "${out}" = "15.0" ] || ng ${LINENO}
 
 ### STRANGE INPUT ###
-out=$(echo あ | ./plus)
-[ "$?" = 1 ] || ng ${LINENO}
+
+# 数字以外 → エラー終了
+echo "あ" | ./plus >/dev/null 2>&1
+[ "$?" = "1" ] || ng ${LINENO}
+
+# 出力は空であるべき
+out=$(echo "あ" | ./plus 2>/dev/null)
 [ "${out}" = "" ] || ng ${LINENO}
 
-out=$(echo | ./plus)
-[ "$?" = 1 ] || ng ${LINENO}
+### EMPTY INPUT ###
+
+# 空行入力 → エラー終了
+out=$(echo | ./plus 2>/dev/null)
+[ "$?" = "1" ] || ng ${LINENO}
 [ "${out}" = "" ] || ng ${LINENO}
 
-[ "$res" = 0 ] && echo OK
+### RESULT ###
+[ "$res" = "0" ] && echo OK
 exit $res
